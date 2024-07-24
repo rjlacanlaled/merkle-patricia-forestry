@@ -137,6 +137,8 @@ await items.reduce(async (trie, { key, value }) => {
   return (await trie).insert(key, Buffer.from(JSON.stringify(value), 'utf-8'));
 }, trie);
 
+// apple -> buffer of value
+
 await trie.fetchChildren(10);
 
 const proofApple = await trie.prove('apple');
@@ -144,7 +146,11 @@ const proofAppleJson = proofApple.toJSON();
 const proofAppleCbor = proofApple.toCBOR();
 const proofAppleAiken = proofApple.toAiken();
 
+// address1 -> { amount: 100, claimed: false }
+// address2 -> { amount: 100, claimed: false }
+
 console.log("Trie:");
+console.log(Buffer.from(trie.hash, 'hex').toString('hex'));
 console.log(trie);
 console.log("====================================\n");
 
@@ -180,17 +186,24 @@ const proofAppleUpdatedJson = proofAppleUpdated.toJSON();
 const proofAppleUpdatedCbor = proofAppleUpdated.toCBOR();
 const proofAppleUpdatedAiken = proofAppleUpdated.toAiken();
 
+console.log("====================================\n");
 console.log("Trie after update:");
+console.log(Buffer.from(trie.hash, 'hex').toString('hex'));
 console.log(trie);
+console.log("====================================\n");
 
 console.log("Proof verification for apple after update:");
 console.log(proofAppleUpdated.verify().equals(trie.hash));
+console.log("====================================\n");
 
 console.log("JSON proof after update:");
 console.log(proofAppleUpdatedJson);
+console.log("====================================\n");
 
 console.log("CBOR proof after update:");
 console.log(proofAppleUpdatedCbor.toString('hex'));
+console.log("====================================\n");
 
 console.log("Aiken proof after update:");
 console.log(proofAppleUpdatedAiken);
+console.log("====================================\n");
